@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: fadlyas/kernel_dockerfile:latest
+    steps:
+      - checkout
+      - run: bash ./Documentation/build.ugglite.sh
