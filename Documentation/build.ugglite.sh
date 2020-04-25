@@ -11,13 +11,14 @@ export TELEGRAM_TOKEN=$token
 export pack=$(pwd)/anykernel-3
 export product_name=GreenForce
 export device="Xiaomi Redmi Note 5A"
-export KBUILD_BUILD_HOST=$(whoami)
-export KBUILD_BUILD_USER=Mhmmdfadlyas
+export KBUILD_BUILD_HOST=$(git log --format='%cn' -1)
+export KBUILD_BUILD_USER=$(git log --format='%H' -1)
 export parse_branch=$(git rev-parse --abbrev-ref HEAD)
 export kernel_img=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 build_start=$(date +"%s")
 
 mkdir $(pwd)/temp
+git clone --depth=1 --single-branch https://github.com/crdroidmod/android_prebuilts_clang_host_linux-x86_clang-5900059 clang
 echo "GCC 4.9.x 20150123 ARCH64 & ARM32 already in /root/ directory"
 git clone --depth=1 --single-branch https://github.com/fabianonline/telegram.sh telegram
 git clone --depth=1 --single-branch https://github.com/fadlyas07/anykernel-3
@@ -34,9 +35,11 @@ tg_channelcast() {
 
 date1=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 make ARCH=arm64 O=out ugglite_defconfig && \
-PATH=/root/gcc/bin:/root/gcc32/bin:$PATH \
+PATH=$(pwd)/clang/bin:/root/gcc/bin:/root/gcc32/bin:$PATH \
 make -j$(nproc --all) O=out \
 		      ARCH=arm64 \
+		      CC=clang \
+		      CLANG_TRIPLE=aarch64-linux-gnu- \
 		      CROSS_COMPILE=aarch64-linux-android- \
 		      CROSS_COMPILE_ARM32=arm-linux-androideabi- 2>&1| tee build_kernel.log
 mv *.log $TEMP
