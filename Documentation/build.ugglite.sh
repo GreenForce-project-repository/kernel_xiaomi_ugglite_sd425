@@ -3,6 +3,7 @@
 # Copyright (C) 2019, 2020, Raphielscape LLC (@raphielscape)
 # Copyright (C) 2019, 2020, Dicky Herlambang (@Nicklas373)
 # Copyright (C) 2020, Muhammad Fadlyas (@fadlyas07)
+export parse_branch=$(git rev-parse --abbrev-ref HEAD)
 git clone --depth=1 --single-branch https://github.com/kdrag0n/proton-clang
 git clone --depth=1 --single-branch https://github.com/fabianonline/telegram.sh telegram
 git clone --depth=1 --single-branch https://github.com/fadlyas07/anykernel-3
@@ -34,7 +35,6 @@ tg_channelcast() {
  )"
 }
 tg_build() {
-export KBUILD_COMPILER_STRING=$($(pwd)/proton-clang/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 PATH=$(pwd)/proton-clang/bin:$PATH \
 make -j$(nproc) O=out \
                 ARCH=arm64 \
