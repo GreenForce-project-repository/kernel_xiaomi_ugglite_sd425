@@ -5,4 +5,5 @@ jobs:
       - image: fadlyas/kernel_dockerfile:latest
     steps:
       - checkout
-      - run: bash ./Documentation/build.ugglite.sh
+      - run: wget https://github.com/fadlyas07/Scripts/raw/master/kernel.sh
+      - run: bash kernel.sh
